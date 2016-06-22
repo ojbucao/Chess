@@ -1,9 +1,9 @@
-require 'spec_helper.rb'
+require 'board'
 
 describe Board do
   
   before :each do
-    @board = Board.new(4);
+    @board = Board.new(size: 4);
   end
 
   describe "#new" do
@@ -25,19 +25,19 @@ describe Board do
     end
   end
 
-  describe "#all_coordinates" do
+  describe "#locations" do
     it "returns an array of coordinates" do
-      expect(@board.all_coordinates).to be_an_instance_of Array
+      expect(@board.locations).to be_an_instance_of Array
     end
 
     it "returns an array of array of coordinates" do
-      expect(@board.all_coordinates[0]).to be_an_instance_of Array
+      expect(@board.locations[0]).to be_an_instance_of Array
     end
 
     it "returns the correct number of coordinates: (size)**2" do
       size = 4
-      board = Board.new(size)
-      expect(board.all_coordinates.size).to eql(size**2)
+      board = Board.new(size: size)
+      expect(board.locations.size).to eql(size**2)
     end
   end
 
@@ -101,7 +101,7 @@ describe Board do
 
   describe "#translate_coords" do
     it "returns rank/column notations for a given coordinates" do
-      board = Board.new(8)
+      board = Board.new(size: 8)
       expect(board.translate_coords([0,0])).to eql("a8")
       expect(board.translate_coords([2,2])).to eql("c6")
       expect(board.translate_coords([6,6])).to eql("g2")

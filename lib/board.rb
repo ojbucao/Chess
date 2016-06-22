@@ -1,11 +1,11 @@
 require 'set'
 
 class Board
-  attr_reader :size, :all_coordinates
+  attr_reader :size, :locations
 
-  def initialize(size=8)
+  def initialize(size: 8)
     @size = size
-    @all_coordinates = generate_all_coords.flatten(1)
+    @locations = generate_all_coords.flatten(1)
     @translated_coords = generate_translated_coords
     @occupied = Set.new
   end
@@ -30,6 +30,10 @@ class Board
 
   def translate_coords(coords)
     @translated_coords[coords]
+  end
+
+  def include?(location)
+    locations.include? location
   end
 
   private
