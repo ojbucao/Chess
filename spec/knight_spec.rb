@@ -2,7 +2,7 @@ require 'knight'
 
 describe Knight do
   describe 'MOVEMENTS constant' do
-    it 'is contains the correct coordinates' do
+    it 'contains the correct coordinates' do
       m = described_class::MOVEMENTS
       expect(m).to contain_exactly([-2, -1], [-2, 1], [-1, -2], [-1, 2], 
                                    [1, -2], [1, 2], [2, -1], [2, 1])
