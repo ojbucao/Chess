@@ -2,7 +2,7 @@ require 'knight'
 
 describe Knight do
   describe 'MOVEMENTS constant' do
-    it 'is not nil' do
+    it 'is contains the correct coordinates' do
       m = described_class::MOVEMENTS
       expect(m).to contain_exactly([-2, -1], [-2, 1], [-1, -2], [-1, 2], 
                                    [1, -2], [1, 2], [2, -1], [2, 1])
@@ -11,7 +11,7 @@ describe Knight do
 
   describe '#possible_moves' do
     context 'when current_location is [0, 0]' do
-      it 'has 20 possible moves' do
+      it 'has 2 possible moves' do
         b = Board.new(size: 3)
         k = described_class.new(board: b)
         moves = k.possible_moves
