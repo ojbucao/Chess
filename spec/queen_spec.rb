@@ -14,8 +14,11 @@ describe Queen do
       it 'has 20 possible moves' do
         b = Board.new(size: 3)
         q = described_class.new(board: b)
+        q.current_location = [1, 1]
         moves = q.possible_moves
-        expect(moves).to eq([[0, 1], [0, 2], [1, 0], [1, 1], [2, 0], [2, 2]])
+        expect(moves).to contain_exactly([0, 0], [0, 1], [0, 2], 
+                                         [1, 0], [1, 2], [2, 0], 
+                                         [2, 1], [2, 2])
       end
     end
   end
