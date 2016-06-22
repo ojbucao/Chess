@@ -10,7 +10,7 @@ describe Queen do
   end
 
   describe '#possible_moves' do
-    context 'when current_location is [1,1]' do
+    context 'when current_location is [1,1] and board size is 3' do
       it 'has 20 possible moves' do
         b = Board.new(size: 3)
         q = described_class.new(board: b)

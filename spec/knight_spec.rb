@@ -10,7 +10,7 @@ describe Knight do
   end
 
   describe '#possible_moves' do
-    context 'when current_location is [0, 0]' do
+    context 'when current_location is [0, 0] and board size is 3' do
       it 'has 2 possible moves' do
         b = Board.new(size: 3)
         k = described_class.new(board: b)
