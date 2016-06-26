@@ -2,7 +2,7 @@ require_relative 'piece'
 
 class Bishop < Piece
 
-  AVATARS = { white: "WB", black: "BB"}
+  AVATARS = { white: "\u2657", black: "\u265D"}
   
   MOVE_MAPPINGS = { up_left_diagonals:    '[-x, x]', 
                     up_right_diagonals:   '[ x, x]',
