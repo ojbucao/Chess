@@ -1,14 +1,18 @@
 require_relative 'piece'
 
 class Queen < Piece
+
+  AVATARS = { white: "WQ", black: "BQ"}
   
-  move_mappings = { up_diagonals:   ['[-x, x]', '[x, x]'],
-                    down_diagonals: ['[-x,-x]', '[x,-x]'],
-                    horizontals:    ['[-x, 0]', '[x, 0]'],
-                    verticals:      ['[0, -x]', '[0, x]'] }
+  MOVE_MAPPINGS = { up_left_diagonals:      '[-x, x]', 
+                    up_right_diagonals:     '[ x, x]',
+                    down_left_diagonals:    '[-x,-x]', 
+                    down_right_diagonals:   '[ x,-x]',
+                    left_horizontals:       '[-x, 0]', 
+                    right_horizontals:      '[ x, 0]',
+                    down_verticals:         '[ 0,-x]', 
+                    up_verticals:           '[ 0, x]' }
 
-  define_movement_methods(move_mappings)
-
-  MOVEMENTS = up_diagonals(8) + down_diagonals(8) + horizontals(8) + verticals(8)
+  define_movement_methods(MOVE_MAPPINGS)
 
 end
