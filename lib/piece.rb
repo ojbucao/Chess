@@ -58,21 +58,20 @@ class Piece
   end
 
   def remove_occupied(moves)
-    locations = process_locations(moves)
+    locations = reorient_locations(moves)
 
-    moves_pruned = []
-    locations.each do |location|
-      moves_pruned << location
+    locations.inject([]) do |memo, location|
+      memo << location
       blocking_piece = @board.piece_at(location)
-      if blocking_piece
-        moves_pruned.pop if blocking_piece.color == self.color
-        break
+      unless blocking_piece.nil?
+        memo.pop if blocking_piece.color == self.color
+        break memo
       end
+      memo
     end
-    moves_pruned
   end
 
-  def process_locations(moves)
+  def reorient_locations(moves)
     locations = (moves.unshift(current_location)).sort
     locations.reverse! if locations[0] != current_location
     locations.shift

@@ -34,8 +34,7 @@ class Pawn < Piece
   end
 
   def toggle_first_move(moves)
-    locations = process_locations(moves)
-
+    locations = reorient_locations(moves)
     locations.pop if move_count > 0 && locations.count > 1
     locations
   end

@@ -1,5 +1,3 @@
-require 'set'
-
 class Board
   attr_reader :size, :locations, :pieces, :captured
 
@@ -24,7 +22,7 @@ class Board
       if piece_at(target).color == piece.color
         raise "You cannot occupy your own piece's spot" 
       end
-      @captured << piece_at(target)
+      capture(target)
     end
 
     @pieces[target] = piece
@@ -35,6 +33,7 @@ class Board
   end
 
   def capture(piece)
+    @captured << piece_at(target)
   end
 
   def piece_at(location)
