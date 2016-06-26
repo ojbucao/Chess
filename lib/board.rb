@@ -1,5 +1,5 @@
 class Board
-  attr_reader :size, :locations, :pieces, :captured
+  attr_reader :size, :locations
 
   def initialize(size: 8)
     @size = size
@@ -24,7 +24,7 @@ class Board
       end
       capture(target)
     end
-
+    vacate(piece.current_location)
     @pieces[target] = piece
   end
 
@@ -32,8 +32,9 @@ class Board
     @pieces.delete(location)
   end
 
-  def capture(piece)
+  def capture(target)
     @captured << piece_at(target)
+    @pieces.delete(target)
   end
 
   def piece_at(location)
@@ -44,20 +45,31 @@ class Board
     !@pieces[location].nil?
   end
 
-  def white_pieces
-    @pieces.select { |coord, piece| piece.color == :white }
+  def pieces(color = nil)
+    return @pieces if color.nil?
+    @pieces.select { |coord, piece| piece.color == color }
   end
 
-  def black_pieces
-    @pieces.select { |coord, piece| piece.color == :black }
+  def captured_pieces(color = nil)
+    return @captured if color.nil?
+    @captured.select { |piece| piece.color == color }
   end
 
-  def captured_white_pieces
-    @captured.select { |piece| piece.color == :white }
+  def available_pieces(color = nil)
+    pieces(color).select do |coord, piece| 
+      piece.available_moves.count > 0 || piece.special_moves.count > 0
+    end
   end
 
-  def captured_black_pieces
-    @captured.select { |piece| piece.color == :black }
+  def setup(configs)
+    configs.each do |color, pieces|
+      pieces.each_with_index do |row, y| 
+        y += 6 if color == :white
+        row.each_with_index do |klass, x|
+          klass.new(board: self, color: color, start_pos: [x, y])
+        end
+      end
+    end
   end
 
   private
@@ -68,6 +80,8 @@ class Board
                   end
   end
 
+  # TODO: Fix this. It's wrong.
+  
   def generate_translated_coords
     translation = {}
     numbers = [*(1..@size)].reverse
