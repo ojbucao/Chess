@@ -14,12 +14,12 @@ class Pawn < Piece
 
   def initialize(board:, color:, start_pos:)
     super
-    self.class.define_movement_methods(self.class::MOVE_MAPPINGS[color])
-    self.class.define_movement_methods(self.class::SPECIAL_MAPPINGS[color])
+    self.class.define_movement_methods(MOVE_MAPPINGS[color])
+    self.class.define_movement_methods(SPECIAL_MAPPINGS[color])
   end
 
   def available_moves
-    moves = self.class::MOVE_MAPPINGS[color].keys.inject([]) do |memo, method|
+    moves = MOVE_MAPPINGS[color].keys.inject([]) do |memo, method|
       m = all_possible_moves(eval("self.class.#{method}(2)"))
       memo += remove_occupied(m)
       toggle_first_move(memo)
@@ -27,7 +27,7 @@ class Pawn < Piece
   end
 
   def special_moves
-    moves = self.class::SPECIAL_MAPPINGS[color].keys.inject([]) do |memo, method|
+    moves = SPECIAL_MAPPINGS[color].keys.inject([]) do |memo, method|
       m = all_possible_moves(eval("self.class.#{method}(1)"))
       memo += remove_occupied(m)
     end
