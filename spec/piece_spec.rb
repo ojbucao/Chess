@@ -4,8 +4,8 @@ require 'board'
 describe Piece do
 
   before :each do
-    mappings = { right_horizontals:      '[ x, 0]',
-                 up_left_diagonals:      '[-x, x]' }
+    mappings = { east:      '[ x, 0]',
+                 north_west:      '[-x, x]' }
 
     stub_const("Piece::MOVE_MAPPINGS", mappings)
     stub_const("Piece::AVATARS", { white: "WQ", black: "BQ"} )
@@ -16,7 +16,7 @@ describe Piece do
 
   describe '.define_movement_methods' do
     it 'takes an offset hash and creates methods from it' do
-      offsets = described_class.right_horizontals(1)
+      offsets = described_class.east(1)
       expect(offsets).to contain_exactly([1, 0])
     end
   end
@@ -24,12 +24,12 @@ describe Piece do
   describe '#all_possible_moves' do
     it 'returns an array of all possible moves from a location given a list of offsets' do
       piece = described_class.new(board: board, color: :white, start_pos: [3, 3])
-      offsets = piece.send(:all_possible_moves, described_class.right_horizontals(8))
+      offsets = piece.send(:all_possible_moves, described_class.east(8))
       expect(offsets).to contain_exactly([4, 3], [5, 3], [6, 3], [7, 3])
     end    
   end
 
-  describe '#remove_occupied' do
+  describe '#remove_blocked' do
     before :each do 
       @piece = described_class.new(board: board, color: :white, start_pos: [3, 3])
     end
@@ -38,8 +38,8 @@ describe Piece do
       it 'returns an array of locations including the blocked location' do
         opponent = described_class.new(board: board, color: :black, start_pos: [6,3])
 
-        offsets = @piece.send(:all_possible_moves, described_class.right_horizontals(8))
-        moves = @piece.send(:remove_occupied, offsets)
+        offsets = @piece.send(:all_possible_moves, described_class.east(8))
+        moves = @piece.send(:remove_blocked, offsets)
 
         expect(moves).to contain_exactly([4, 3], [5, 3], [6, 3])
       end    
@@ -49,8 +49,8 @@ describe Piece do
       it 'returns an array of locations excluding the blocked location' do
         opponent = Piece.new(board: board, color: :white, start_pos: [6, 3])
 
-        offsets = @piece.send(:all_possible_moves, described_class.right_horizontals(8))
-        moves = @piece.send(:remove_occupied, offsets)
+        offsets = @piece.send(:all_possible_moves, described_class.east(8))
+        moves = @piece.send(:remove_blocked, offsets)
         
         expect(moves).to contain_exactly([4, 3], [5, 3])
       end    

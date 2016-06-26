@@ -21,27 +21,22 @@ class Piece
     @move_count = 0
   end
 
-  def available_moves(num=8)
-    moves = MOVE_MAPPINGS.keys.inject([]) do |memo, method|
-      m = all_possible_moves(eval("self.class.#{method}(num)"))
-      memo += remove_occupied(m)
-    end
+  def available_moves(levels = 8)
+    moves = get_available_moves(mappings: self.class::MOVE_MAPPINGS, levels: levels)
   end
 
-  def move(target)
-    if piece.current_location == target
-      raise "You didn't move!"
-    end
+  def move_to(target)
+    raise "You didn't move!" if current_location == target
+    # raise "Invalid move" unless available_moves.include? target
 
-    @board.vacate(target)
     @board.occupy(target: target, piece: self)
-    current_location = target
+    @current_location = target
     @move_count += 1
     true
   end
 
   def avatar
-    AVATARS[color]
+    self.class::AVATARS[color]
   end
 
   def unmoved?
@@ -51,13 +46,19 @@ class Piece
   private
 
   def all_possible_moves(offsets)
-    all_possible = lambda { |move| [@current_location[0] + move[0], @current_location[1] + move[1]] }
-    all_inboard = lambda { |move| @board.include?(move) }
-
     moves = offsets.map(&all_possible).select(&all_inboard)
   end
 
-  def remove_occupied(moves)
+  def get_available_moves(mappings:, levels: 8, &block)
+    moves = mappings.keys.inject([]) do |memo, method|
+      m = all_possible_moves(eval("self.class.#{method}(levels)"))
+      memo += remove_blocked(m)
+      memo = block.call(memo) if block_given?
+      memo
+    end
+  end
+
+  def remove_blocked(moves)
     locations = reorient_locations(moves)
 
     locations.inject([]) do |memo, location|
@@ -71,11 +72,23 @@ class Piece
     end
   end
 
+  def remove_unoccupied(moves)
+    moves.reject { |e| @board.piece_at(e).nil? }
+  end
+
   def reorient_locations(moves)
     locations = (moves.unshift(current_location)).sort
     locations.reverse! if locations[0] != current_location
     locations.shift
     locations
+  end
+  
+  def all_possible
+    lambda { |move| [@current_location[0] + move[0], @current_location[1] + move[1]] }
+  end
+
+  def all_inboard
+    lambda { |move| @board.include?(move) }
   end
 
 end
