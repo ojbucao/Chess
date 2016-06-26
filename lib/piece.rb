@@ -1,7 +1,6 @@
 class Piece
   
-  attr_accessor :current_location
-  attr_reader :start_pos, :color, :move_count
+  attr_reader :start_pos, :color, :move_count, :current_location
 
   def self.define_movement_methods(move_mappings)
     move_mappings.each do |name, offsets|
@@ -16,26 +15,37 @@ class Piece
   def initialize(board:, color:, start_pos:)
     @board = board
     @start_pos = start_pos
-    @board.occupy(location: start_pos, piece: self)
+    @board.occupy(target: start_pos, piece: self)
     @current_location = start_pos
     @color = color
     @move_count = 0
   end
 
-  def available_moves
-    moves = self.class::MOVE_MAPPINGS.keys.inject([]) do |memo, method|
-      m = all_possible_moves(eval("self.class.#{method}(8)"))
+  def available_moves(num=8)
+    moves = MOVE_MAPPINGS.keys.inject([]) do |memo, method|
+      m = all_possible_moves(eval("self.class.#{method}(num)"))
       memo += remove_occupied(m)
     end
   end
 
   def move(target)
-    @board.occupy(target, self)
+    if piece.current_location == target
+      raise "You didn't move!"
+    end
+
+    @board.vacate(target)
+    @board.occupy(target: target, piece: self)
+    current_location = target
     @move_count += 1
+    true
   end
 
   def avatar
     AVATARS[color]
+  end
+
+  def unmoved?
+    move_count == 0 ? true : false
   end
 
   private
@@ -48,9 +58,7 @@ class Piece
   end
 
   def remove_occupied(moves)
-    locations = (moves.unshift(current_location)).sort
-    locations.reverse! if locations[0] != current_location
-    locations.shift
+    locations = process_locations(moves)
 
     moves_pruned = []
     locations.each do |location|
@@ -62,6 +70,13 @@ class Piece
       end
     end
     moves_pruned
+  end
+
+  def process_locations(moves)
+    locations = (moves.unshift(current_location)).sort
+    locations.reverse! if locations[0] != current_location
+    locations.shift
+    locations
   end
 
 end

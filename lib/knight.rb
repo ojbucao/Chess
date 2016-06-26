@@ -4,6 +4,8 @@ class Knight < Piece
 
   AVATARS = { white: "WKt", black: "BKt"}
 
+  MOVE_MAPPINGS = {}
+
   def available_moves
     moves = remove_occupied(all_possible_moves)
   end
