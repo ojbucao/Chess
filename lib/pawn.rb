@@ -4,13 +4,13 @@ class Pawn < Piece
 
   AVATARS = { white: "WP", black: "BP"}
   
-  MOVE_MAPPINGS = { white: { up_verticals:           '[ 0, x]' },
-                    black: { down_verticals:         '[ 0,-x]' } }
+  MOVE_MAPPINGS = { white: { up_verticals:   '[ 0, x]' },
+                    black: { down_verticals: '[ 0,-x]' } }
 
-  SPECIAL_MAPPINGS = { white: { up_left_diagonals:      '[-x, x]', 
-                                up_right_diagonals:     '[ x, x]' },
-                       black: { down_left_diagonals:    '[-x,-x]', 
-                                down_right_diagonals:   '[ x,-x]' } }
+  SPECIAL_MAPPINGS = { white: { up_left_diagonals:    '[-x, x]', 
+                                up_right_diagonals:   '[ x, x]' },
+                       black: { down_left_diagonals:  '[-x,-x]', 
+                                down_right_diagonals: '[ x,-x]' } }
 
   def initialize(board:, color:, start_pos:)
     super
