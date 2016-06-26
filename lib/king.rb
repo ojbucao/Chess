@@ -2,7 +2,7 @@ require_relative 'piece'
 
 class King < Piece
 
-  AVATARS = { white: "WQ", black: "BQ"}
+  AVATARS = { white: "\u2654", black: "\u265A"}
   
   MOVE_MAPPINGS = { up_left_diagonals:    '[-x, x]', 
                     up_right_diagonals:   '[ x, x]',
@@ -16,7 +16,7 @@ class King < Piece
   define_movement_methods(MOVE_MAPPINGS)
 
   def available_moves
-    super(1)
+    super(levels: 1)
   end
 
 end
