@@ -22,7 +22,7 @@ RSpec.configure do |config|
   # assertions if you prefer.
   config.tty = true
   config.color = true
-  
+
   config.expect_with :rspec do |expectations|
     # This option will default to `true` in RSpec 4. It makes the `description`
     # and `failure_message` of custom matchers include text for helper methods
@@ -96,7 +96,8 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
-  
-  %w{board piece pawn rook knight bishop queen king config}.each { |i| require_relative "../lib/#{i}" }
+
+  classes = %w{board piece pawn rook knight bishop queen king config display}
+  classes.each { |i| require_relative "../lib/#{i}" }
 
 end
