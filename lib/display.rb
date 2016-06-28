@@ -19,9 +19,9 @@ class Display
       print "  #{(y - 8).abs} "
       row.each_with_index do |cell, x|
         bg = "\e[106m"
-        bg = "\e[107m" if y % 2 == 0 && x % 2 == 0
-        bg = "\e[107m" if y % 2 == 1 && x % 2 == 1
-        bf = "\e[30m"
+        bg = "\e[47m" if y % 2 == 0 && x % 2 == 0
+        bg = "\e[47m" if y % 2 == 1 && x % 2 == 1
+        bf = "\e[90m"
 
         print "#{bg}#{bf} #{cell ? cell : ' '} "
       end
