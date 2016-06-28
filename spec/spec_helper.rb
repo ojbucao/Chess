@@ -96,4 +96,7 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+  
+  %w{board piece pawn rook knight bishop queen king config}.each { |i| require_relative "../lib/#{i}" }
+
 end

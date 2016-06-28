@@ -1,6 +1,3 @@
-require 'board'
-require 'knight'
-
 describe Board do
   
   let!(:board) { Board.new(size: 4) }

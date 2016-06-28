@@ -1,6 +1,3 @@
-require 'pawn'
-require 'board'
-
 describe Pawn do
   before :each do 
     @b = Board.new

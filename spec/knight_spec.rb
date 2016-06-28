@@ -1,6 +1,3 @@
-require 'knight'
-require 'board'
-
 describe Knight do
   describe '#available_moves' do
     before :each do

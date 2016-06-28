@@ -1,5 +1,3 @@
-%w{board piece pawn rook knight bishop queen king config}.each { |i| require_relative "../lib/#{i}" }
-
 describe 'chess' do
   before :each do 
     @b = Board.new

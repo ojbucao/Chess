@@ -1,6 +1,3 @@
-require 'piece'
-require 'board'
-
 describe Piece do
 
   before :each do
