@@ -16,7 +16,7 @@ class King < Piece
   define_movement_methods(MOVE_MAPPINGS)
 
   def available_moves
-    super(levels: 1)
+    super(1)
   end
 
 end
