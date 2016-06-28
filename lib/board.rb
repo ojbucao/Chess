@@ -20,7 +20,7 @@ class Board
   def occupy(target:, piece:)
     unless piece_at(target).nil?
       if piece_at(target).color == piece.color
-        raise "You cannot occupy your own piece's spot" 
+        raise "You cannot occupy your own piece's spot"
       end
       capture(target)
     end
@@ -56,15 +56,15 @@ class Board
   end
 
   def available_pieces(color = nil)
-    pieces(color).select do |coord, piece| 
+    pieces(color).select do |coord, piece|
       piece.available_moves.count > 0 || piece.special_moves.count > 0
     end
   end
 
   def setup(configs)
-    configs.each do |color, pieces|
-      pieces.each_with_index do |row, y| 
-        y += 6 if color == :white
+    configs.each_with_index do |(color, pieces), i|
+      pieces.each_with_index do |row, y|
+        y += 6 if i == 1  # Move down 6 squares for next set
         row.each_with_index do |klass, x|
           klass.new(board: self, color: color, start_pos: [x, y])
         end
