@@ -102,9 +102,13 @@ describe Board do
   describe "#translate_coords" do
     it "returns rank/column notations for a given coordinates" do
       board = Board.new(size: 8)
-      expect(board.translate_coords([0,0])).to eql("a8")
-      expect(board.translate_coords([2,2])).to eql("c6")
-      expect(board.translate_coords([6,6])).to eql("g2")
+      expect(board.translate_coords("a8")).to eq([0,0])
+      expect(board.translate_coords("c6")).to eq([2,2])
+      expect(board.translate_coords("g2")).to eq([6,6])
+      expect(board.translate_coords("a1")).to eq([0,7])
+      expect(board.translate_coords("h1")).to eq([7,7])
+      expect(board.translate_coords("h8")).to eq([7,0])
+      expect(board.translate_coords("e4")).to eq([4,4])
     end
   end
 end

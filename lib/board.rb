@@ -80,8 +80,6 @@ class Board
                   end
   end
 
-  # TODO: Fix this. It's wrong.
-  
   def generate_translated_coords
     translation = {}
     numbers = [*(1..@size)].reverse
@@ -90,7 +88,7 @@ class Board
 
     numbers.each_with_index do |num, x|
       letters.each_with_index do |ltr, y|
-        translation[coordinates[x][y]] = "#{ltr}#{num}"
+        translation["#{ltr}#{num}"] = coordinates[y][x]
       end
     end
     return translation
