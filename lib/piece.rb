@@ -1,4 +1,13 @@
 class Piece
+
+  UP_VERTICALS = '[0, -x]'
+  DOWN_VERTICALS = '[0, x]'
+  LEFT_HORIZONTALS = '[-x, 0]' 
+  RIGHT_HORIZONTALS = '[x, 0]'
+  UP_LEFT_DIAGONALS = '[-x, -x]' 
+  UP_RIGHT_DIAGONALS = '[x, -x]'
+  DOWN_LEFT_DIAGONALS = '[-x, x]' 
+  DOWN_RIGHT_DIAGONALS = '[x, x]'
   
   attr_reader :start_pos, :color, :move_count, :current_location
 

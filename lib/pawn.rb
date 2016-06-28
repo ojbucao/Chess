@@ -4,8 +4,8 @@ class Pawn < Piece
 
   AVATARS = { white: "\u2659", black: "\u265F"}
   
-  MOVE_MAPPINGS = { white: { down_verticals: '[ 0,-x]' },
-                    black: { up_verticals:   '[ 0, x]' } }
+  MOVE_MAPPINGS = { white: { up_verticals: UP_VERTICALS },
+                    black: { down_verticals: DOWN_VERTICALS } }
 
   SPECIAL_MAPPINGS = { black: { down_left_diagonals:  '[-x, x]', 
                                 down_right_diagonals: '[ x, x]' },
