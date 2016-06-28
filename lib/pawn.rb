@@ -8,9 +8,9 @@ class Pawn < Piece
                     facing_up: { up_verticals: UP_VERTICALS } }
 
   SPECIAL_MAPPINGS = { facing_down: { down_left_diagonals: DOWN_LEFT_DIAGONALS,
-                                down_right_diagonals: DOWN_RIGHT_DIAGONALS },
+                                      down_right_diagonals: DOWN_RIGHT_DIAGONALS },
                        facing_up: { up_left_diagonals: UP_LEFT_DIAGONALS,
-                                up_right_diagonals: UP_RIGHT_DIAGONALS } }
+                                    up_right_diagonals: UP_RIGHT_DIAGONALS } }
 
   def initialize(board:, color:, start_pos:)
     super
