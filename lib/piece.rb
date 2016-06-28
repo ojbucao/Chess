@@ -2,13 +2,13 @@ class Piece
 
   UP_VERTICALS = '[0, -x]'
   DOWN_VERTICALS = '[0, x]'
-  LEFT_HORIZONTALS = '[-x, 0]' 
+  LEFT_HORIZONTALS = '[-x, 0]'
   RIGHT_HORIZONTALS = '[x, 0]'
-  UP_LEFT_DIAGONALS = '[-x, -x]' 
+  UP_LEFT_DIAGONALS = '[-x, -x]'
   UP_RIGHT_DIAGONALS = '[x, -x]'
-  DOWN_LEFT_DIAGONALS = '[-x, x]' 
+  DOWN_LEFT_DIAGONALS = '[-x, x]'
   DOWN_RIGHT_DIAGONALS = '[x, x]'
-  
+
   attr_reader :start_pos, :color, :move_count, :current_location
 
   def self.define_movement_methods(move_mappings)
@@ -32,6 +32,15 @@ class Piece
 
   def available_moves(levels = 8)
     moves = get_available_moves(mappings: self.class::MOVE_MAPPINGS, levels: levels)
+  end
+
+  def available_moves_formatted
+    format = available_moves.inject({}) do |memo, move|
+      memo[move] = "\e[42m"
+      memo
+    end
+    format[@current_location] = "\e[43m"
+    format
   end
 
   def move_to(target)
@@ -91,7 +100,7 @@ class Piece
     locations.shift
     locations
   end
-  
+
   def all_possible
     lambda { |move| [@current_location[0] + move[0], @current_location[1] + move[1]] }
   end

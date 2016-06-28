@@ -11,7 +11,7 @@ class Display
     end
   end
 
-  def show
+  def show(format={})
     setup_display_board
     system "clear"
     puts "     a  b  c  d  e  f  g  h"
@@ -21,6 +21,7 @@ class Display
         bg = "\e[106m"
         bg = "\e[47m" if y % 2 == 0 && x % 2 == 0
         bg = "\e[47m" if y % 2 == 1 && x % 2 == 1
+        bg = format[[x,y]] || bg
         bf = "\e[90m"
 
         print "#{bg}#{bf} #{cell ? cell : ' '} "
