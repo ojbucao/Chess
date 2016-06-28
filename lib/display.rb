@@ -14,9 +14,9 @@ class Display
   def show
     setup_display_board
     system "clear"
-    puts "     0  1  2  3  4  5  6  7"
+    puts "     a  b  c  d  e  f  g  h"
     @display_board.each_with_index do |row, y|
-      print "  #{y} "
+      print "  #{(y - 8).abs} "
       row.each_with_index do |cell, x|
         bg = "\e[106m"
         bg = "\e[107m" if y % 2 == 0 && x % 2 == 0
@@ -26,10 +26,10 @@ class Display
         print "#{bg}#{bf} #{cell ? cell : ' '} "
       end
       print "\e[0m"
-      print " #{y} "
+      print " #{(y - 8).abs} "
       puts
     end
-    puts "     0  1  2  3  4  5  6  7"
+    puts "     a  b  c  d  e  f  g  h"
     puts
   end
 
