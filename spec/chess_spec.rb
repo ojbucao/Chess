@@ -1,7 +1,7 @@
 describe 'chess' do
   before :each do 
     @b = Board.new
-    @b.setup(Config::SETTINGS)
+    @b.setup(Config::SETTINGS[1])
   end
 
   it 'has 32 pieces' do
