@@ -83,29 +83,44 @@ describe Board do
       expect(board.occupied? [2, 2]).to be true
     end
 
-    # it "removes a piece from previous location" do
-    #   expect(board.occupied? [0, 0]).to be true
-    #   board.occupy(target: [2, 2], piece: piece)
-    #   expect(board.occupied? [0, 0]).to be false
-    # end
+    it "removes a piece from previous location" do
+      expect(board.occupied? [0, 0]).to be true
+      board.occupy(target: [2, 2], piece: piece)
+      expect(board.occupied? [0, 0]).to be false
+    end
 
-    # it "sets the piece's current location to the new location" do
-    #   expect(piece.current_location).to eq([0, 0])
-    #   board.occupy(target: [2, 2], piece: piece)
-    #   expect(piece.current_location).to eq([2, 2])
-    # end
+    it "raises an error if location is already occupied by same color" do
+      expect(board.occupied? [0, 0]).to be true
+      expect { Knight.new(board: board, color: :white, start_pos: [0,0]) }.to raise_error
+      expect(board.captured_pieces.count).to eq 0
+    end
+
+    it "captures the opponents piece if it's occupying the location" do
+      expect(board.occupied? [0, 0]).to be true
+      expect(board.captured_pieces.count).to eq 0
+      k = Knight.new(board: board, color: :black, start_pos: [0,0])
+      expect(board.captured_pieces.count).to eq 1
+    end
+
   end
 
   describe "#translate_coords" do
     it "returns rank/column notations for a given coordinates" do
       board = Board.new(size: 8)
-      expect(board.translate_coords("a8")).to eq([0,0])
-      expect(board.translate_coords("c6")).to eq([2,2])
-      expect(board.translate_coords("g2")).to eq([6,6])
-      expect(board.translate_coords("a1")).to eq([0,7])
-      expect(board.translate_coords("h1")).to eq([7,7])
-      expect(board.translate_coords("h8")).to eq([7,0])
-      expect(board.translate_coords("e4")).to eq([4,4])
+      expect(board.translate("a8")).to eq([0,0])
+      expect(board.translate("c6")).to eq([2,2])
+      expect(board.translate("g2")).to eq([6,6])
+      expect(board.translate("a1")).to eq([0,7])
+      expect(board.translate("h1")).to eq([7,7])
+      expect(board.translate("h8")).to eq([7,0])
+      expect(board.translate("e4")).to eq([4,4])
+      expect(board.translate([0,0])).to eq("a8")
+      expect(board.translate([2,2])).to eq("c6")
+      expect(board.translate([6,6])).to eq("g2")
+      expect(board.translate([0,7])).to eq("a1")
+      expect(board.translate([7,7])).to eq("h1")
+      expect(board.translate([7,0])).to eq("h8")
+      expect(board.translate([4,4])).to eq("e4")
     end
   end
 end

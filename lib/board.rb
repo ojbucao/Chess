@@ -1,3 +1,4 @@
+require 'pry'
 class Board
   attr_reader :size, :locations
 
@@ -9,7 +10,7 @@ class Board
     @captured = []
   end
 
-  def translate_coords(coords)
+  def translate(coords)
     @translated_coords[coords]
   end
 
@@ -18,7 +19,7 @@ class Board
   end
 
   def occupy(target:, piece:)
-    unless piece_at(target).nil?
+    if occupied?(target)
       if piece_at(target).color == piece.color
         raise "You cannot occupy your own piece's spot"
       end
@@ -89,6 +90,7 @@ class Board
     numbers.each_with_index do |num, x|
       letters.each_with_index do |ltr, y|
         translation["#{ltr}#{num}"] = coordinates[y][x]
+        translation[[y,x]] = "#{ltr}#{num}"
       end
     end
     return translation
