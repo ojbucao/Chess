@@ -24,10 +24,10 @@ class Piece
   def initialize(board:, color:, start_pos:)
     @board = board
     @start_pos = start_pos
-    @board.occupy(target: start_pos, piece: self)
     @current_location = start_pos
     @color = color
     @move_count = 0
+    @board.occupy(target: start_pos, piece: self)
   end
 
   def available_moves(levels = 8)
