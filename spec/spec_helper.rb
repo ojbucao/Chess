@@ -99,5 +99,6 @@ RSpec.configure do |config|
 
   classes = %w{board piece pawn rook knight bishop queen king config display}
   classes.each { |i| require_relative "../lib/#{i}" }
+  require 'pry'
 
 end
