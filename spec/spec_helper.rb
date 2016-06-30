@@ -97,8 +97,11 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 
-  classes = %w{board piece pawn rook knight bishop queen king config display}
+  classes = %w{board piece pawn rook knight 
+               bishop queen king config display 
+               move }
   classes.each { |i| require_relative "../lib/#{i}" }
   require 'pry'
+  require_relative '../lib/move.rb'
 
 end
