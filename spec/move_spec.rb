@@ -58,4 +58,14 @@ describe Move do
       expect(m.possible.keys - k.available_moves).to eq([k.current_location])
     end
   end
+
+  describe '#latest_move' do
+    it 'returns a hash of the latest move location with special formatting' do
+      k = Knight.new(board: board, color: :white, start_pos: [0,0])
+      m = Move.new(board: board, origin: [0,0], target: [1,2])
+      m.proceed
+      expect(m.latest_move).to be_a Hash
+      expect(m.latest_move.keys).to eq([k.current_location])
+    end
+  end
 end

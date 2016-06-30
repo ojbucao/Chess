@@ -36,10 +36,16 @@ class Piece
 
   def available_moves_formatted
     format = available_moves.inject({}) do |memo, move|
-      memo[move] = "\e[42m"
+      memo[move] = "\e[43m"
       memo
     end
-    format[@current_location] = "\e[43m"
+    format[@current_location] = "\e[101m"
+    format
+  end
+
+  def current_location_formatted
+    format = {}
+    format[@current_location] = "\e[101m"
     format
   end
 

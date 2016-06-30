@@ -25,6 +25,10 @@ class Move
     @piece.available_moves_formatted
   end
 
+  def latest_move
+    @piece.current_location_formatted
+  end
+
   private
 
   def sanitize(origin, target)

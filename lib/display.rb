@@ -11,6 +11,11 @@ class Display
     end
   end
 
+  def get_input
+    print "Enter your move: "
+    input = gets.chomp
+  end
+
   def show(format={})
     setup_display_board
     system "clear"

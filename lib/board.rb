@@ -70,6 +70,7 @@ class Board
         end
       end
     end
+    self
   end
 
   private
