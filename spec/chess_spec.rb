@@ -9,10 +9,10 @@ describe 'chess' do
   end
 
   it 'has 16 white pieces' do
-    expect(@b.pieces(:white).count).to eq(16)
+    expect(@b.pieces(color: :white).count).to eq(16)
   end
 
   it 'has 16 black pieces' do
-    expect(@b.pieces(:black).count).to eq(16)
+    expect(@b.pieces(color: :black).count).to eq(16)
   end
 end

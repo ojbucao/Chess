@@ -45,9 +45,16 @@ class Board
     !@pieces[location].nil?
   end
 
-  def pieces(color = nil)
-    return @pieces if color.nil?
-    @pieces.select { |coord, piece| piece.color == color }
+  def pieces(options = {})  
+    return @pieces if options.empty? || !options.is_a?(Hash)
+
+    criteria = options.inject([]) do |memo, (k, v)|
+      memo << "piece.#{k} == #{v.is_a?(Symbol) ? ':' : ''}#{v}"
+    end.join(" && ")  
+    
+    @pieces.select do |coord, piece| 
+      eval(criteria)
+    end
   end
 
   def captured_pieces(color = nil)
@@ -55,8 +62,8 @@ class Board
     @captured.select { |piece| piece.color == color }
   end
 
-  def available_pieces(color = nil)
-    pieces(color).select do |coord, piece|
+  def movable_pieces(color = nil)
+    pieces(color: color).select do |coord, piece|
       piece.available_moves.count > 0 || piece.special_moves.count > 0
     end
   end
@@ -71,6 +78,10 @@ class Board
       end
     end
     self
+  end
+
+  def castling(target)
+    castling = {}
   end
 
   private

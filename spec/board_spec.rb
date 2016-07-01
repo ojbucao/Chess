@@ -51,6 +51,20 @@ describe Board do
       expect(board.pieces).to be_a Hash
       expect(board.pieces).not_to be_empty
     end
+
+    context "when given a criteria hash" do
+      it "returns a subset of all the pieces for the given criteria" do
+        pw = Pawn.new(board: board, color: :white, start_pos: [0, 1])
+        pb = Pawn.new(board: board, color: :black, start_pos: [0, 2])
+        bw = Bishop.new(board: board, color: :black, start_pos: [0, 3])
+        
+        expect(board.pieces(color: :white).count).to eq(2)
+        expect(board.pieces(color: :black).count).to eq(2)
+        expect(board.pieces(class: Pawn).count).to eq(2)
+        expect(board.pieces(class: Bishop, color: :black).count).to eq(1)
+        expect(board.pieces(class: Bishop, color: :white).count).to eq(0)
+      end
+    end
   end
 
   describe "#piece_at" do
