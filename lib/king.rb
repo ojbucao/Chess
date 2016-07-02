@@ -21,7 +21,7 @@ class King < Piece
   end
 
   def available_moves
-    super(1)
+    super(1) + special_moves
   end
 
   def special_moves
