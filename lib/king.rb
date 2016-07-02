@@ -25,7 +25,7 @@ class King < Piece
   end
 
   def special_moves
-    @board.castlingables(self).keys
+    @board.castlingables(self).to_h.keys 
   end
 
 end

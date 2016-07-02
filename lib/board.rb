@@ -166,7 +166,7 @@ class Board
   end
 
   def castlingables(piece)
-    return nil if !piece.class == King || !piece.unmoved?
+    return nil if piece.class != King || !piece.unmoved?
     row = same_row(piece.current_location)
     rooks = [piece_at(row.first), piece_at(row.last)]
   
@@ -174,11 +174,13 @@ class Board
       if rook && rook.unmoved?
         path = path_between(piece.current_location, rook.current_location)
         unless path_blocked?(path)
-          memo[path[1]] = rook
+          memo[path[1]] = [rook, path[0]]
         end
       end
       memo
     end
+    return nil if castling.empty?
+    castling
   end
 
   private

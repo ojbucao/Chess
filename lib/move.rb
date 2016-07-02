@@ -18,6 +18,7 @@ class Move
   end
 
   def proceed
+    do_castling if castling?
     @piece.move_to(target)
   end
 
@@ -27,6 +28,18 @@ class Move
 
   def latest_move
     @piece.current_location_formatted
+  end
+
+  def castling?
+    @castlingable = @board.castlingables(piece)
+    return true if @castlingable && @castlingable.keys.include?(@target)
+    return false
+  end
+
+  def do_castling
+    rook = @castlingable[target][0]
+    kings_side = @castlingable[target][1]
+    rook.move_to(kings_side)
   end
 
   private
