@@ -16,7 +16,8 @@ class Knight < Piece
     offsets = [-2, -1, 1, 2]
 
     movements = offsets.permutation.to_a(2).reject { |x| x[0].abs == x[1].abs }.sort
-    moves = movements.map(&all_possible).select(&all_inboard)
+    moves = movements.map(&self.class.all_possible(@current_location))
+                     .select(&self.class.all_inboard(@board))
   end
 
   def remove_occupied(moves)

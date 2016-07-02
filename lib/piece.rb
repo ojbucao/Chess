@@ -1,25 +1,9 @@
-class Piece
+require_relative 'directable'
 
-  UP_VERTICALS = '[0, -x]'
-  DOWN_VERTICALS = '[0, x]'
-  LEFT_HORIZONTALS = '[-x, 0]'
-  RIGHT_HORIZONTALS = '[x, 0]'
-  UP_LEFT_DIAGONALS = '[-x, -x]'
-  UP_RIGHT_DIAGONALS = '[x, -x]'
-  DOWN_LEFT_DIAGONALS = '[-x, x]'
-  DOWN_RIGHT_DIAGONALS = '[x, x]'
+class Piece
+  extend Directable
 
   attr_reader :start_pos, :color, :move_count, :current_location
-
-  def self.define_movement_methods(move_mappings)
-    move_mappings.each do |name, offsets|
-      define_singleton_method(name) do |upper_limit|
-        range = (1..upper_limit)
-        moves = range.map { |x| eval(offsets) }
-        moves.sort
-      end
-    end
-  end
 
   def initialize(board:, color:, start_pos:)
     @board = board
@@ -70,7 +54,8 @@ class Piece
   private
 
   def all_possible_moves(offsets)
-    moves = offsets.map(&all_possible).select(&all_inboard)
+    moves = offsets.map(&self.class.all_possible(@current_location))
+                   .select(&self.class.all_inboard(@board))
   end
 
   def get_available_moves(mappings:, levels: 8, &block)
@@ -105,14 +90,6 @@ class Piece
     locations.reverse! if locations[0] != current_location
     locations.shift
     locations
-  end
-
-  def all_possible
-    lambda { |move| [@current_location[0] + move[0], @current_location[1] + move[1]] }
-  end
-
-  def all_inboard
-    lambda { |move| @board.include?(move) }
   end
 
 end

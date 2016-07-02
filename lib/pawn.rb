@@ -4,13 +4,13 @@ class Pawn < Piece
 
   AVATARS = { white: "\u2659", black: "\u265F"}
 
-  MOVE_MAPPINGS = { facing_down: { down_verticals: DOWN_VERTICALS },
-                    facing_up: { up_verticals: UP_VERTICALS } }
+  MOVE_MAPPINGS = { facing_down: { down_verticals: Directable::DOWN_VERTICALS },
+                    facing_up: { up_verticals: Directable::UP_VERTICALS } }
 
-  SPECIAL_MAPPINGS = { facing_down: { down_left_diagonals: DOWN_LEFT_DIAGONALS,
-                                      down_right_diagonals: DOWN_RIGHT_DIAGONALS },
-                       facing_up: { up_left_diagonals: UP_LEFT_DIAGONALS,
-                                    up_right_diagonals: UP_RIGHT_DIAGONALS } }
+  SPECIAL_MAPPINGS = { facing_down: { down_left_diagonals: Directable::DOWN_LEFT_DIAGONALS,
+                                      down_right_diagonals: Directable::DOWN_RIGHT_DIAGONALS },
+                       facing_up: { up_left_diagonals: Directable::UP_LEFT_DIAGONALS,
+                                    up_right_diagonals: Directable::UP_RIGHT_DIAGONALS } }
 
   def initialize(board:, color:, start_pos:)
     super
