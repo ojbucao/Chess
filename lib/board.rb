@@ -39,6 +39,10 @@ class Board
       end
       capture(target)
     end
+    migrate(piece, target)
+  end
+
+  def migrate(piece, target)
     vacate(piece.current_location)
     @pieces[target] = piece
   end
