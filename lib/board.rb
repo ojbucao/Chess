@@ -1,4 +1,19 @@
+require_relative 'directable'
+
 class Board
+  extend Directable
+
+  MOVE_MAPPINGS = { up_verticals: Directable::UP_VERTICALS,
+                    down_verticals: Directable::DOWN_VERTICALS,
+                    left_horizontals: Directable::LEFT_HORIZONTALS,
+                    right_horizontals: Directable::RIGHT_HORIZONTALS,
+                    up_left_diagonals: Directable::UP_LEFT_DIAGONALS,
+                    up_right_diagonals: Directable::UP_RIGHT_DIAGONALS,
+                    down_left_diagonals: Directable::DOWN_LEFT_DIAGONALS,
+                    down_right_diagonals: Directable::DOWN_RIGHT_DIAGONALS }
+
+  define_movement_methods(MOVE_MAPPINGS)
+
   attr_reader :size, :locations
 
   def initialize(size: 8)
@@ -68,6 +83,72 @@ class Board
     end
   end
 
+  def path_blocked?(locations)
+    locations.each do |location|
+      return true if occupied? location
+    end
+    false
+  end
+
+  def path_between(origin, target)
+    orientation = get_orientation(origin, target)
+    return nil if orientation.nil?
+
+    path = self.send(orientation, origin, target)
+    path.tap { |me| me.push(origin) }.sort!
+    path.reverse! if (target <=> origin) == -1
+    path.rotate!(path.index(origin))
+    
+    result = ((path.index(origin) + 1)...path.index(target)).inject([]) do |memo, i|
+      memo << path[i]
+      memo
+    end
+
+    result
+  end
+
+  def get_orientation(origin, target)
+    return :same_row if same_row(origin).include? target
+    return :same_column if same_column(origin).include? target
+    return :same_diagonal unless same_diagonal(origin, target).nil?
+  end
+
+  def same_row(origin, target = nil)
+    offsets = self.class.left_horizontals(8) + self.class.right_horizontals(8)
+    row = offsets.map(&self.class.all_possible(origin))
+           .select(&self.class.all_inboard(self))
+           .sort
+    return nil if !target.nil? && !row.include?(target)
+    row
+  end
+
+  def same_column(origin, target = nil)
+    offsets = self.class.up_verticals(8) + self.class.down_verticals(8)
+    column = offsets.map(&self.class.all_possible(origin))
+           .select(&self.class.all_inboard(self))
+           .sort
+    return nil if !target.nil? && !column.include?(target)
+    column
+  end
+
+  def same_diagonal(origin, target = nil)
+    offsets_list = [self.class.up_left_diagonals(8) + self.class.down_right_diagonals(8),
+                    self.class.up_right_diagonals(8) + self.class.down_left_diagonals(8)]
+    diagonals = offsets_list.inject([]) do |memo, offsets|
+      memo << offsets.map(&self.class.all_possible(origin))
+                     .select(&self.class.all_inboard(self))
+                     .sort
+      memo
+    end
+    return diagonals if target.nil?
+
+    retval = nil
+    diagonals.each do |diagonal|
+      retval = diagonal if diagonal.include? target
+    end
+    retval
+  end
+
   def setup(configs)
     configs.each_with_index do |(color, pieces), i|
       pieces.each_with_index do |row, y|
@@ -80,8 +161,20 @@ class Board
     self
   end
 
-  def castling(target)
-    castling = {}
+  def castlingables(piece)
+    return nil if !piece.class == King || !piece.unmoved?
+    row = same_row(piece.current_location)
+    rooks = [piece_at(row.first), piece_at(row.last)]
+  
+    castling = rooks.inject({}) do |memo, rook|
+      if rook && rook.unmoved?
+        path = path_between(piece.current_location, rook.current_location)
+        unless path_blocked?(path)
+          memo[path[1]] = rook
+        end
+      end
+      memo
+    end
   end
 
   private
