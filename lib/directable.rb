@@ -1,4 +1,5 @@
 module Directable
+  
   UP_VERTICALS = '[0, -x]'
   DOWN_VERTICALS = '[0, x]'
   LEFT_HORIZONTALS = '[-x, 0]'
