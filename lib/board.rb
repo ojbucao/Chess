@@ -184,11 +184,15 @@ class Board
     castling
   end
 
-  def threats(location)
-    @pieces.inject({}) do |memo, (k, v)|
+  def threats(location, color = nil)
+    threats = @pieces.inject({}) do |memo, (k, v)|
       memo[k] = v if v.available_moves.include?(location)
       memo
     end
+    if color
+      threats.select! { |k, v| v.color == color }
+    end
+    threats
   end
 
   private
