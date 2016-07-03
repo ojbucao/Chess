@@ -19,6 +19,7 @@ class Move
 
   def proceed
     do_castling if castling?
+    do_enpassant if enpassant?
     @piece.move_to(target)
   end
 
@@ -32,14 +33,26 @@ class Move
 
   def castling?
     @castlingable = @board.castlingables(piece)
-    return true if @castlingable && @castlingable.keys.include?(@target)
-    return false
+    return true if @castlingable.to_h.keys.include?(@target)
+    false
+  end
+
+  def enpassant?
+    return false if @piece.class != Pawn
+    @enpassantable = @piece.enpassantables
+    return true if @enpassantable.to_h.keys.include?(@target)
+    false
   end
 
   def do_castling
     rook = @castlingable[target][0]
     kings_side = @castlingable[target][1]
     rook.move_to(kings_side)
+  end
+
+  def do_enpassant
+    pawn = @enpassantable[target]
+    @board.capture(pawn.current_location)
   end
 
   private
