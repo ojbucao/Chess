@@ -68,9 +68,10 @@ class Piece
                    .select(&self.class.all_inboard(@board))
   end
 
-  def get_available_moves(mappings:, levels: 8, &block)
+  def get_available_moves(mappings:, levels: 8, location: nil, &block)
+    location = @current_location if location.nil?
     moves = mappings.keys.inject([]) do |memo, method|
-      m = all_possible_moves(eval("self.class.#{method}(levels)"))
+      m = all_possible_moves(eval("self.class.#{method}(levels)"), location)
       memo += remove_blocked(m)
       memo = block.call(memo) if block_given?
       memo
