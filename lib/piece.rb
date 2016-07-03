@@ -12,6 +12,11 @@ class Piece
     @color = color
     @move_count = 0
     @board.occupy(target: start_pos, piece: self)
+    @color_not = { black: :white, white: :black }
+  end
+
+  def opposite_color
+    @color_not[color]
   end
 
   def available_moves(levels = 8)
