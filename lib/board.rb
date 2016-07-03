@@ -174,7 +174,9 @@ class Board
     castling = rooks.inject({}) do |memo, rook|
       if rook && rook.unmoved?
         path = path_between(piece.current_location, rook.current_location)
-        if !path_blocked?(path) && !threatened?(path[1], piece.opposite_color) && !threatened?(piece.current_location, piece.opposite_color)
+        if !path_blocked?(path) && 
+           !threatened?(path[1], piece.opposite_color) && 
+           !threatened?(piece.current_location, piece.opposite_color)
           memo[path[1]] = [rook, path[0]]
         end
       end
