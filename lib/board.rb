@@ -184,6 +184,12 @@ class Board
     castling
   end
 
+  def threatened?(location, color)
+    return true if threats(location, color).empty?
+  end
+
+  # TODO: This is wrong because it's including the pawn's
+  # regular moves as threats when it shouldn't
   def threats(location, color = nil)
     threats = @pieces.inject({}) do |memo, (k, v)|
       memo[k] = v if v.available_moves.include?(location)
