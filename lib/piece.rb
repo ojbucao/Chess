@@ -62,8 +62,9 @@ class Piece
 
   private
 
-  def all_possible_moves(offsets)
-    moves = offsets.map(&self.class.all_possible(@current_location))
+  def all_possible_moves(offsets, location = nil)
+    location = @current_location if location.nil?
+    moves = offsets.map(&self.class.all_possible(location))
                    .select(&self.class.all_inboard(@board))
   end
 
