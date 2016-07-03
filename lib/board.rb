@@ -174,7 +174,7 @@ class Board
     castling = rooks.inject({}) do |memo, rook|
       if rook && rook.unmoved?
         path = path_between(piece.current_location, rook.current_location)
-        unless path_blocked?(path)
+        if !path_blocked?(path) || !threatened?(path[1], piece.opposite_color)
           memo[path[1]] = [rook, path[0]]
         end
       end
@@ -185,16 +185,25 @@ class Board
   end
 
   def threatened?(location, color)
-    return true if threats(location, color).empty?
+    return true if threats(location, color).to_h.empty?
   end
 
-  # TODO: This is wrong because it's including the pawn's
-  # regular moves as threats when it shouldn't
+  # TODO: Refactor this
   def threats(location, color = nil)
-    threats = @pieces.inject({}) do |memo, (k, v)|
-      memo[k] = v if v.available_moves.include?(location)
+    non_pawns = @pieces.reject { |k, v| v.class == Pawn }
+    a_threats = non_pawns.inject({}) do |memo, (k, v)|
+      memo[k] = v if v.regular_moves.include?(location)
       memo
     end
+
+    pawns = @pieces.select { |k, v| v.class == Pawn }
+    b_threats = pawns.inject({}) do |memo, (k, v)|
+      memo[k] = v if v.special_moves.include?(location)
+      memo
+    end
+
+    threats = a_threats.merge(b_threats)
+
     if color
       threats.select! { |k, v| v.color == color }
     end
