@@ -19,7 +19,11 @@ class Piece
     @color_not[color]
   end
 
-  def available_moves(levels = 8)
+  def available_moves
+    regular_moves
+  end
+
+  def regular_moves(levels = 8)
     moves = get_available_moves(mappings: self.class::MOVE_MAPPINGS, levels: levels)
   end
 

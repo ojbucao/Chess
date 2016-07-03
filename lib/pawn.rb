@@ -20,11 +20,15 @@ class Pawn < Piece
   end
 
   def available_moves
+    regular_moves + special_moves
+  end
+
+  def regular_moves
     moves = get_available_moves(mappings: MOVE_MAPPINGS[@orientation], levels: 2) do |memo|
       toggle_first_move(memo)
     end
     moves.reject! { |move| @board.occupied? move }
-    moves + special_moves
+    moves
   end
 
   def special_moves

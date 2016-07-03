@@ -7,6 +7,10 @@ class Knight < Piece
   MOVE_MAPPINGS = {} # Not used for Knight
 
   def available_moves
+    regular_moves
+  end
+
+  def regular_moves
     moves = remove_occupied(all_possible_moves)
   end
 
