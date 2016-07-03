@@ -39,6 +39,7 @@ class Pawn < Piece
     moves = get_available_moves(mappings: SPECIAL_MAPPINGS[@orientation], levels: 1) do |memo|
       memo = remove_unoccupied(memo)
     end
+    moves + enpassantables.to_h.keys
   end
 
   def toggle_first_move(moves)
