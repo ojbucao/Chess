@@ -29,7 +29,8 @@ class Pawn < Piece
 
   def special_moves
     moves = get_available_moves(mappings: SPECIAL_MAPPINGS[@orientation], levels: 1) do |memo|
-      remove_unoccupied(memo)
+      memo = remove_unoccupied(memo)
+      memo = remove_blocked(memo)
     end
   end
 
