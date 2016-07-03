@@ -14,7 +14,7 @@ class Board
 
   define_movement_methods(MOVE_MAPPINGS)
 
-  attr_reader :size, :locations
+  attr_reader :size, :locations, :last_location_used
 
   def initialize(size: 8)
     @size = size
@@ -40,6 +40,7 @@ class Board
       capture(target)
     end
     migrate(piece, target)
+    @last_location_used = target
   end
 
   def migrate(piece, target)
@@ -181,6 +182,13 @@ class Board
     end
     return nil if castling.empty?
     castling
+  end
+
+  def threats(location)
+    @pieces.inject({}) do |memo, (k, v)|
+      memo[k] = v if v.available_moves.include?(location)
+      memo
+    end
   end
 
   private
