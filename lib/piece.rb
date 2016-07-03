@@ -82,7 +82,7 @@ class Piece
   end
 
   def remove_unoccupied(moves)
-    moves.reject { |e| @board.piece_at(e).nil? }
+    moves.reject { |location| !@board.occupied?(location) }
   end
 
   def reorient_locations(moves)
