@@ -12,15 +12,11 @@ class Pawn < Piece
                        facing_up: { up_left_diagonals: Directable::UP_LEFT_DIAGONALS,
                                     up_right_diagonals: Directable::UP_RIGHT_DIAGONALS } }
 
-  SIDE_MAPPINGS =  { left_side: Directable::LEFT_HORIZONTALS, 
-                     right_side: Directable::RIGHT_HORIZONTALS }
-
   def initialize(board:, color:, start_pos:)
     super
     @orientation = start_pos[1] <= 3 ? :facing_down : :facing_up
     self.class.define_movement_methods(MOVE_MAPPINGS[@orientation])
     self.class.define_movement_methods(SPECIAL_MAPPINGS[@orientation])
-    self.class.define_movement_methods(SIDE_MAPPINGS)
   end
 
   def available_moves
@@ -40,6 +36,10 @@ class Pawn < Piece
       memo = remove_unoccupied(memo)
     end
     moves + enpassantables.to_h.keys
+  end
+
+  def capture_areas
+    get_available_moves(mappings: SPECIAL_MAPPINGS[@orientation], levels: 1)
   end
 
   def toggle_first_move(moves)
