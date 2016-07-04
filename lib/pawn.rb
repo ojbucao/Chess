@@ -53,8 +53,9 @@ class Pawn < Piece
 
     enpassant = targets.inject({}) do |memo, target|
       side = [target[0],current_location[1]]
-      if side == @board.last_location_used && @board.piece_at(side).move_count == 1
-        memo[target] = @board.piece_at(side)
+      side_piece = @board.piece_at(side)
+      if side_piece && side_piece.move_count == 1 && side == @board.last_location_used
+        memo[target] = side_piece
       end
       memo
     end
