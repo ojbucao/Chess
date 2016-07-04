@@ -200,7 +200,7 @@ class Board
 
     pawns = @pieces.select { |k, v| v.class == Pawn }
     b_threats = pawns.inject({}) do |memo, (k, v)|
-      memo[k] = v if v.special_moves.include?(location)
+      memo[k] = v if v.capture_areas.include?(location)
       memo
     end
 
