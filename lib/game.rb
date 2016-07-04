@@ -1,6 +1,6 @@
   classes = %w{board piece pawn rook knight 
                bishop queen king config display 
-               move }
+               move input}
   classes.each { |i| require_relative "#{i}" }
 
   require 'pry'
@@ -11,13 +11,16 @@ class Game
     display = Display.new(board: board)
     display.show
     loop do
-      input = display.get_input
-      origin = input.split("-")[0]
-      target = input.split("-")[1]
-      move = Move.new(board: board, origin: origin, target: target)
-      
-      move.proceed if move.legal?
-      display.show(move.formatted)
+      raw_input = display.get_input
+      input = Input.new(raw_input)
+      if input.valid? && board.occupied?(board.translate(input.origin))
+        move = Move.new(board: board, origin: input.origin, target: input.target)
+        move.proceed if move.legal?
+        display.show(move.formatted)
+      else
+        # display message
+        display.show
+      end
     end
 
   end

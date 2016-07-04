@@ -144,9 +144,4 @@ class Move
     end
   end
 
-  private
-
-  def sanitize(origin, target)
-    # TODO
-  end
 end
