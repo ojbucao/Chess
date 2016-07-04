@@ -14,7 +14,7 @@ class Move
   end
 
   def legal?
-    @piece.available_moves.include? target
+    try && @piece.available_moves.include?(target)
   end
 
   def proceed
@@ -53,6 +53,14 @@ class Move
   def do_enpassant
     pawn = @enpassantable[target]
     @board.capture(pawn.current_location)
+  end
+
+  def try
+    original_location = @piece.current_location
+    @board.vacate(@piece.current_location)
+    return true unless @piece.king.in_check?
+  ensure
+    @board.pieces[original_location] = @piece
   end
 
   private
