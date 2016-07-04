@@ -19,6 +19,10 @@ class Piece
     @color_not[color]
   end
 
+  def king
+    @board.pieces(class: King, color: color).values.first
+  end
+
   def available_moves
     regular_moves
   end
