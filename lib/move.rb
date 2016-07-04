@@ -56,11 +56,24 @@ class Move
   end
 
   def try
-    original_location = @piece.current_location
+    if enpassant?
+      target_piece = @enpassantable[target]
+    else
+      target_piece = @board.piece_at(target)
+    end
+
+    cached_piece_location = @piece.current_location
+    cached_target_location = target_piece.current_location if target_piece
+
     @board.vacate(@piece.current_location)
+    @board.pieces.delete(target_piece.current_location) if target_piece
+    @board.pieces[target] = @piece
+
     return true unless @piece.king.in_check?
   ensure
-    @board.pieces[original_location] = @piece
+    @board.pieces.delete(target)
+    @board.pieces[cached_target_location] = target_piece if target_piece
+    @board.pieces[cached_piece_location] = @piece
   end
 
   private
