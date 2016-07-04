@@ -21,11 +21,14 @@ class King < Piece
   end
 
   def available_moves
-    regular_moves + special_moves
+    moves = regular_moves.reject do |move|
+     @board.threatened?(move, opposite_color)
+    end.to_a
+    moves + special_moves
   end
 
   def regular_moves
-    super(1)
+    moves = super(1)
   end
 
   def special_moves
