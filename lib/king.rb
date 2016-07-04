@@ -32,4 +32,12 @@ class King < Piece
     @board.castlingables(self).to_h.keys 
   end
 
+  def in_check?
+    return true unless threats.empty?
+  end
+
+  def threats
+    @board.threats(current_location, opposite_color)
+  end
+
 end
