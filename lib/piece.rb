@@ -23,6 +23,10 @@ class Piece
     @board.pieces(class: King, color: color).values.first
   end
 
+  def enemy_king
+    @board.pieces(class: King, color: @color_not[color]).values.first
+  end
+
   def available_moves
     regular_moves
   end
