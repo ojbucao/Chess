@@ -35,21 +35,6 @@ class Piece
     moves = get_available_moves(mappings: self.class::MOVE_MAPPINGS, levels: levels)
   end
 
-  def available_moves_formatted
-    format = available_moves.inject({}) do |memo, move|
-      memo[move] = "\e[43m"
-      memo
-    end
-    format[@current_location] = "\e[101m"
-    format
-  end
-
-  def current_location_formatted
-    format = {}
-    format[@current_location] = "\e[101m"
-    format
-  end
-
   def move_to(target)
     raise "You didn't move!" if current_location == target
     # raise "Invalid move" unless available_moves.include? target

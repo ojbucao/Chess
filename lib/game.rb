@@ -16,12 +16,8 @@ class Game
       target = input.split("-")[1]
       move = Move.new(board: board, origin: origin, target: target)
       
-      if target.nil?
-        display.show(move.possible)
-      else
-        move.proceed if move.legal?
-        display.show(move.latest_move)
-      end
+      move.proceed if move.legal?
+      display.show(move.formatted)
     end
 
   end
