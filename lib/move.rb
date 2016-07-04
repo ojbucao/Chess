@@ -29,7 +29,7 @@ class Move
       highlight_possible
     elsif !try || @checked
       highlight_check
-    elsif target = @piece.current_location
+    elsif target == @piece.current_location
       highlight_latest_move
     else
       # FIX this is not being executed
