@@ -22,7 +22,7 @@ class King < Piece
 
   def available_moves
     moves = regular_moves.reject do |move|
-     @board.threatened?(move, opposite_color)
+     @board.threatened?(move, opposite_color) || threat_vectors.include?(move)
     end.to_a
     moves + special_moves
   end
@@ -45,6 +45,20 @@ class King < Piece
 
   def threats
     @board.threats(current_location, opposite_color)
+  end
+
+  def threat_vectors
+    paths = threats.keys.inject([]) do |memo1, threat|
+      path = @board.path_through(threat, current_location).inject([]) do |memo2, p|
+        next memo2 if p == threat
+        break memo2 if @board.occupied?(p) && @board.piece_at(p).color == opposite_color
+        memo2 << p
+        memo2
+      end
+      memo1 += path
+      memo1
+    end
+    paths
   end
 
 end
