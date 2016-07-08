@@ -53,7 +53,8 @@ class Move
       memo[threat_location] = "\e[41m"
       memo
     end
-    format[king_location] = "\e[41m"
+    format[king_location] = "\e[41m" if @piece.class != King
+    format[target] = "\e[41m" if @piece.class == King
     format      
   end
 
@@ -141,6 +142,7 @@ class Move
   end
 
   def check_for_checked
+    @checked = nil
     [@piece.king, @piece.enemy_king].each do |king|
       @checked = king if king.in_check?
     end
