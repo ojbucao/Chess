@@ -44,6 +44,8 @@ class Move
     elsif whos_in_check == :enemy
       king_location = @piece.enemy_king.current_location
       threat_location = @board.threats(king_location, @piece.color).keys.first
+    else
+      return {}
     end
     format = {}
     unless @board.piece_at(threat_location).class == Knight
@@ -103,6 +105,14 @@ class Move
   end
 
   def try
+    if @piece.class == King 
+      if @board.threatened?(target, @piece.opposite_color)
+        @checked = @piece.king if @piece.king.in_check?
+        return false
+      end
+      return true
+    end
+
     if enpassant?
       target_piece = @enpassantable[target]
     else
@@ -120,9 +130,11 @@ class Move
     @potential_threat = @board.threats(@piece.king.current_location, @piece.opposite_color).keys.first
     return true unless @piece.king.in_check?
   ensure
-    @board.pieces.delete(target)
-    @board.pieces[cached_target_location] = target_piece if target_piece
-    @board.pieces[cached_piece_location] = @piece
+    if @piece.class != King
+      @board.pieces.delete(target)
+      @board.pieces[cached_target_location] = target_piece if target_piece
+      @board.pieces[cached_piece_location] = @piece
+    end
   end
 
   def classify_color(color)

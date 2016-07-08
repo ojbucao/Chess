@@ -39,7 +39,7 @@ class Pawn < Piece
   end
 
   def capture_areas
-    get_available_moves(mappings: SPECIAL_MAPPINGS[@orientation], levels: 1)
+    super(mappings: SPECIAL_MAPPINGS[@orientation], levels: 1)
   end
 
   def toggle_first_move(moves)

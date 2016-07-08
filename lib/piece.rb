@@ -35,6 +35,14 @@ class Piece
     moves = get_available_moves(mappings: self.class::MOVE_MAPPINGS, levels: levels)
   end
 
+  def capture_areas(mappings: self.class::MOVE_MAPPINGS, levels: 8)
+    moves = mappings.keys.inject([]) do |memo, method|
+      m = all_possible_moves(eval("self.class.#{method}(levels)"), @current_location)
+      memo += remove_blocked(m)
+      memo
+    end
+  end
+
   def move_to(target)
     raise "You didn't move!" if current_location == target
     # raise "Invalid move" unless available_moves.include? target
@@ -65,20 +73,22 @@ class Piece
     location = @current_location if location.nil?
     moves = mappings.keys.inject([]) do |memo, method|
       m = all_possible_moves(eval("self.class.#{method}(levels)"), location)
-      memo += remove_blocked(m)
+      memo += remove_blocked(m) do |loc, blocking_piece|
+        loc.pop if blocking_piece.color == self.color
+      end
       memo = block.call(memo) if block_given?
       memo
     end
   end
 
-  def remove_blocked(moves)
+  def remove_blocked(moves, &block)
     locations = reorient_locations(moves)
 
     locations.inject([]) do |memo, location|
       memo << location
       blocking_piece = @board.piece_at(location)
       unless blocking_piece.nil?
-        memo.pop if blocking_piece.color == self.color
+        block.call(memo, blocking_piece) if block_given?
         break memo
       end
       memo

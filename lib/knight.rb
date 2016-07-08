@@ -14,6 +14,10 @@ class Knight < Piece
     moves = remove_occupied(all_possible_moves)
   end
 
+  def capture_areas
+    all_possible_moves
+  end
+
   private
 
   def all_possible_moves

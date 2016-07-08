@@ -28,7 +28,11 @@ class King < Piece
   end
 
   def regular_moves
-    moves = super(1)
+    super(1)
+  end
+
+  def capture_areas
+    super(levels: 1)
   end
 
   def special_moves

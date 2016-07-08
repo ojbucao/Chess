@@ -194,7 +194,7 @@ class Board
   def threats(location, color = nil)
     non_pawns = @pieces.reject { |k, v| v.class == Pawn }
     a_threats = non_pawns.inject({}) do |memo, (k, v)|
-      memo[k] = v if v.regular_moves.include?(location)
+      memo[k] = v if v.capture_areas.include?(location)
       memo
     end
 
