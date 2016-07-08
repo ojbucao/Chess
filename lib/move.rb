@@ -40,22 +40,24 @@ class Move
   def highlight_check
     if whos_in_check == :team
       king_location = @piece.king.current_location
-      threat_location = @potential_threat || @board.threats(king_location, @piece.opposite_color).keys.first
+      threat_locations = @potential_threat || @board.threats(king_location, @piece.opposite_color).keys
     elsif whos_in_check == :enemy
       king_location = @piece.enemy_king.current_location
-      threat_location = @board.threats(king_location, @piece.color).keys.first
+      threat_locations = @board.threats(king_location, @piece.color).keys
     else
       return {}
     end
     format = {}
-    unless @board.piece_at(threat_location).class == Knight
-      check_path = @board.path_between(king_location, threat_location)
-      check_path.each do |location|
-        format[location] = "\e[43m"
-      end
-    end
+    # unless @board.piece_at(threat_location).class == Knight
+    #   check_path = @board.path_between(king_location, threat_location)
+    #   check_path.each do |location|
+    #     format[location] = "\e[43m"
+    #   end
+    # end
     format[king_location] = "\e[41m"
-    format[threat_location] = "\e[41m"
+    threat_locations.each do |threat_location|
+      format[threat_location] = "\e[41m"
+    end
     format      
   end
 
@@ -105,14 +107,14 @@ class Move
   end
 
   def try
-    if @piece.class == King 
-      if @board.threatened?(target, @piece.opposite_color)
-        @checked = @piece.king if @piece.king.in_check?
-        return false
-      end
-      return true
-    end
-
+    # if @piece.class == King 
+    #   if @board.threatened?(target, @piece.opposite_color)
+    #     @checked = @piece.king if @piece.king.in_check?
+    #     return false
+    #   end
+    #   return true
+    # end
+    return false if target.nil?
     if enpassant?
       target_piece = @enpassantable[target]
     else
@@ -125,15 +127,17 @@ class Move
     @board.vacate(@piece.current_location)
     @board.pieces.delete(target_piece.current_location) if target_piece
     @board.pieces[target] = @piece
+    @piece.instance_exec(target) { |loc| @current_location = loc }
     
     @checked = @piece.king if @piece.king.in_check?
     @potential_threat = @board.threats(@piece.king.current_location, @piece.opposite_color).keys.first
     return true unless @piece.king.in_check?
   ensure
-    if @piece.class != King
+    if target
       @board.pieces.delete(target)
       @board.pieces[cached_target_location] = target_piece if target_piece
       @board.pieces[cached_piece_location] = @piece
+      @piece.instance_exec(cached_piece_location) { |loc| @current_location = loc }
     end
   end
 
