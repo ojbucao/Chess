@@ -96,6 +96,18 @@ class Board
   end
 
   def path_between(origin, target)
+    path = path_through(origin, target)
+    return nil unless path
+    
+    result = ((path.index(origin) + 1)...path.index(target)).inject([]) do |memo, i|
+      memo << path[i]
+      memo
+    end
+
+    result
+  end
+
+  def path_through(origin, target)
     orientation = get_orientation(origin, target)
     return nil if orientation.nil?
 
@@ -104,12 +116,7 @@ class Board
     path.reverse! if (target <=> origin) == -1
     path.rotate!(path.index(origin))
     
-    result = ((path.index(origin) + 1)...path.index(target)).inject([]) do |memo, i|
-      memo << path[i]
-      memo
-    end
-
-    result
+    path
   end
 
   def get_orientation(origin, target)
