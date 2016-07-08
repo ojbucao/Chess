@@ -16,7 +16,7 @@ class Move
   def legal?
     return false if target.nil?
     check_for_checked
-    try && @piece.available_moves.include?(target)
+    @piece.available_moves.include?(target) && try
   end
 
   def proceed
@@ -41,7 +41,7 @@ class Move
   def highlight_check
     if whos_in_check == :friend
       king_location = @piece.king.current_location
-      threat_locations = @potential_threat || @board.threats(king_location, @piece.opposite_color).keys
+      threat_locations = (@potential_threat if @piece.regular_moves.include?(target)) || @board.threats(king_location, @piece.opposite_color).keys
     elsif whos_in_check == :enemy
       king_location = @piece.enemy_king.current_location
       threat_locations = @board.threats(king_location, @piece.color).keys
@@ -54,7 +54,7 @@ class Move
       memo
     end
     format[king_location] = "\e[41m" if @piece.class != King
-    format[target] = "\e[41m" if @piece.class == King
+    format[target] = "\e[41m" if @piece.class == King && @piece.regular_moves.include?(target)
     format      
   end
 
