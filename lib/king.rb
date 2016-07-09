@@ -4,7 +4,7 @@ class King < Piece
 
   AVATARS = { white: "\u2654", black: "\u265A"}
 
-  POINTS = nil
+  POINTS = 10
   
   MOVE_MAPPINGS = { up_verticals: Directable::UP_VERTICALS,
                     down_verticals: Directable::DOWN_VERTICALS,
@@ -45,16 +45,12 @@ class King < Piece
     return true unless threats.empty?
   end
 
-  def threats
-    @board.threats(current_location, opposite_color)
-  end
-
   def threat_vectors
     paths = threats.keys.inject([]) do |memo1, threat|
 
       # Exclude Pawn, Knight and King because they don't have long-range vectors
       next memo1 if [Pawn, Knight, King].include?(@board.piece_at(threat).class)
-      
+
       path = @board.path_through(threat, current_location).inject([]) do |memo2, p|
         next memo2 if p == threat
         break memo2 if @board.occupied?(p) && @board.piece_at(p).color == opposite_color

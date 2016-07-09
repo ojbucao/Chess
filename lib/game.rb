@@ -7,8 +7,6 @@
 class Game
 
   def play
-    color_not = { black: :white, white: :black }
-
     display = Display.new
     display.welcome
 
@@ -37,6 +35,10 @@ class Game
       display.show(move.result)
     end
 
+  end
+
+  def color_not
+    { black: :white, white: :black }
   end
 
 end

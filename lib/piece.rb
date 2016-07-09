@@ -48,6 +48,16 @@ class Piece
     end
   end
 
+  def threats
+    @board.threats(current_location, opposite_color)
+  end
+
+  def defended?
+    @board.pieces(color: color).each do |location, piece|
+      return true if piece.available_moves.include?(current_location)
+    end
+  end
+
   def move_to(target)
     return "You didn't move!" if current_location == target
     
