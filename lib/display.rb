@@ -16,7 +16,7 @@ class Display
     input = gets.chomp
   end
 
-  def show(format={})
+  def show(args={})
     setup_display_board
     system "clear"
     puts "     a  b  c  d  e  f  g  h"
@@ -26,7 +26,7 @@ class Display
         bg = "\e[106m"
         bg = "\e[47m" if y % 2 == 0 && x % 2 == 0
         bg = "\e[47m" if y % 2 == 1 && x % 2 == 1
-        bg = format[[x,y]] || bg
+        bg = ( args[:format] ? args[:format][[x,y]] : nil ) || bg
         bf = "\e[90m"
 
         print "#{bg}#{bf} #{cell ? cell : ' '} "
@@ -36,6 +36,7 @@ class Display
       puts
     end
     puts "     a  b  c  d  e  f  g  h"
+    puts "     \e[33m#{args[:message]}\e[0m" unless args[:message].to_s.strip.empty?
     puts
   end
 

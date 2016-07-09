@@ -33,14 +33,16 @@ class Board
   end
 
   def occupy(target:, piece:)
+    message = ""
     if occupied?(target)
       if piece_at(target).color == piece.color
-        raise "You cannot occupy your own piece's spot"
+        return "You cannot occupy your own piece's spot"
       end
-      capture(target)
+      message = capture(target)
     end
     migrate(piece, target)
     @last_location_used = target
+    message
   end
 
   def migrate(piece, target)
@@ -53,8 +55,10 @@ class Board
   end
 
   def capture(target)
-    @captured << piece_at(target)
+    piece = piece_at(target)
+    @captured << piece
     @pieces.delete(target)
+    return "#{piece.color.to_s.capitalize} #{piece.class} captured!"
   end
 
   def piece_at(location)

@@ -20,22 +20,33 @@ class Move
   end
 
   def proceed
-    do_castling if castling?
-    do_enpassant if enpassant?
-    @piece.move_to(target)
-    check_for_checked
+    messages = []
+    messages << do_castling if castling?
+    messages << do_enpassant if enpassant?
+    messages << @piece.move_to(target)
+    messages << check_for_checked
+    @message = messages.join(" ")
   end
 
-  def formatted
-    if target.nil?
-      highlight_possible
-    elsif !try || @checked
-      highlight_check
-    elsif target == @piece.current_location
-      highlight_latest_move
-    else
-      highlight_illegal
-    end
+  def result
+    message.merge highlights
+  end
+
+  def message
+    { message: @message }
+  end
+
+  def highlights
+    highlight = if target.nil?
+                  highlight_possible
+                elsif !try || @checked
+                  highlight_check
+                elsif target == @piece.current_location
+                  highlight = highlight_latest_move
+                else
+                  highlight_illegal
+                end
+    { format: highlight }
   end
 
   def highlight_check
@@ -96,11 +107,13 @@ class Move
     rook = @castlingable[target][0]
     kings_side = @castlingable[target][1]
     rook.move_to(kings_side)
+    "Castling successful!"
   end
 
   def do_enpassant
     pawn = @enpassantable[target]
     @board.capture(pawn.current_location)
+    "En Passant!"
   end
 
   def try
@@ -146,6 +159,7 @@ class Move
     [@piece.king, @piece.enemy_king].each do |king|
       @checked = king if king.in_check?
     end
+    return "#{@checked.color.to_s.capitalize} King in Check!" if @checked
   end
 
 end

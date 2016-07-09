@@ -44,13 +44,12 @@ class Piece
   end
 
   def move_to(target)
-    raise "You didn't move!" if current_location == target
-    # raise "Invalid move" unless available_moves.include? target
-
-    @board.occupy(target: target, piece: self)
+    return "You didn't move!" if current_location == target
+    
+    message = @board.occupy(target: target, piece: self)
     @current_location = target
     @move_count += 1
-    true
+    message
   end
 
   def avatar

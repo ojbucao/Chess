@@ -16,11 +16,10 @@ class Game
       if input.valid? && board.occupied?(board.translate(input.origin))
         move = Move.new(board: board, origin: input.origin, target: input.target)
         move.proceed if move.legal?
-        display.show(move.formatted)
-      else
-        # display message
-        display.show
       end
+
+      display.show(move.result)
+
     end
 
   end
