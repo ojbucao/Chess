@@ -15,7 +15,7 @@ class Game
 
     color = Input.new(display.get_color).color
     board = Board.new.setup(Config::SETTINGS[color])
-    ai = DumbAi.new(color: color_not[color], interface: board)
+    ai = DumbAi.new(color: color_not[color], interface: display, board: board)
     human = Human.new(color: color, interface: display)
 
     display.board = board

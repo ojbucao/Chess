@@ -2,7 +2,13 @@ require_relative 'player'
 
 class DumbAi < Player
 
+  def initialize(color:, interface:, board:)
+    super(color: color, interface: interface)
+    @board = board
+  end
+
   def input
+    @interface.ai_thinking
     Input.new(get_move)
   end
 
@@ -11,15 +17,15 @@ class DumbAi < Player
     piece = pieces[pieces.to_a.sample.first]
     origin = piece.current_location
     target = piece.available_moves.sample
-    [@interface.translate(origin), @interface.translate(target)].join
+    [@board.translate(origin), @board.translate(target)].join
   end
 
   def pieces
-    @interface.movable_pieces(@color)
+    @board.movable_pieces(@color)
   end
 
   def king
-    @interface.pieces(class: King, color: @color).values.first
+    @board.pieces(class: King, color: @color).values.first
   end
 
 

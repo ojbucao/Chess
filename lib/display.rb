@@ -11,6 +11,10 @@ class Display
     end
   end
 
+  def ai_thinking
+    print "Thinking..."
+  end
+
   def get_input
     print "Your move: "
     input = gets.chomp
