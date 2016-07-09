@@ -1,6 +1,6 @@
 class Display
 
-  def initialize(board:)
+  def board=(board)
     @board = board
   end
 
@@ -12,8 +12,19 @@ class Display
   end
 
   def get_input
-    print "Enter your move: "
+    print "Your move: "
     input = gets.chomp
+  end
+
+  def get_color
+    puts "What color do you want to play as? (white or black)"
+    color = gets.chomp
+  end
+
+  def welcome
+    system "clear"
+    puts "Welcome to EZ Chess!"
+    puts
   end
 
   def show(args={})

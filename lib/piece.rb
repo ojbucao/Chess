@@ -35,6 +35,10 @@ class Piece
     moves = get_available_moves(mappings: self.class::MOVE_MAPPINGS, levels: levels)
   end
 
+  def special_moves
+    []
+  end
+
   def capture_areas(mappings: self.class::MOVE_MAPPINGS, levels: 8)
     moves = mappings.keys.inject([]) do |memo, method|
       m = all_possible_moves(eval("self.class.#{method}(levels)"), @current_location)
