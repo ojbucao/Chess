@@ -49,7 +49,10 @@ class King < Piece
 
   def threat_vectors
     paths = threats.keys.inject([]) do |memo1, threat|
-      next memo1 if @board.piece_at(threat).class == Pawn
+
+      # Exclude Pawn, Knight and King because they don't have long-range vectors
+      next memo1 if [Pawn, Knight, King].include?(@board.piece_at(threat).class)
+      
       path = @board.path_through(threat, current_location).inject([]) do |memo2, p|
         next memo2 if p == threat
         break memo2 if @board.occupied?(p) && @board.piece_at(p).color == opposite_color
