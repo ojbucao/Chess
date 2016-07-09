@@ -25,7 +25,7 @@ class Move
     messages << do_enpassant if enpassant?
     messages << @piece.move_to(target)
     messages << check_for_checked
-    @message = messages.join(" ")
+    @message = messages.join("\n")
   end
 
   def result
