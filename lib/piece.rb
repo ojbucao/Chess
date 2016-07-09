@@ -3,7 +3,7 @@ require_relative 'directable'
 class Piece
   extend Directable
 
-  attr_reader :start_pos, :color, :move_count, :current_location
+  attr_reader :start_pos, :color, :move_count, :current_location, :points
 
   def initialize(board:, color:, start_pos:)
     @board = board
@@ -13,6 +13,7 @@ class Piece
     @move_count = 0
     @board.occupy(target: start_pos, piece: self)
     @color_not = { black: :white, white: :black }
+    @points = self.class::POINTS
   end
 
   def opposite_color

@@ -4,6 +4,8 @@ class Pawn < Piece
 
   AVATARS = { white: "\u2659", black: "\u265F"}
 
+  POINTS = 1
+
   MOVE_MAPPINGS = { facing_down: { down_verticals: Directable::DOWN_VERTICALS },
                     facing_up: { up_verticals: Directable::UP_VERTICALS } }
 

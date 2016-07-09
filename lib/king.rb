@@ -3,6 +3,8 @@ require_relative 'piece'
 class King < Piece
 
   AVATARS = { white: "\u2654", black: "\u265A"}
+
+  POINTS = nil
   
   MOVE_MAPPINGS = { up_verticals: Directable::UP_VERTICALS,
                     down_verticals: Directable::DOWN_VERTICALS,

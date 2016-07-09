@@ -6,6 +6,8 @@ class Knight < Piece
 
   MOVE_MAPPINGS = {} # Not used for Knight
 
+  POINTS = 3
+
   def available_moves
     regular_moves
   end

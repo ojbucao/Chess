@@ -3,6 +3,8 @@ require_relative 'piece'
 class Bishop < Piece
 
   AVATARS = { white: "\u2657", black: "\u265D"}
+
+  POINTS = 3
   
   MOVE_MAPPINGS = { up_left_diagonals: Directable::UP_LEFT_DIAGONALS,
                     up_right_diagonals: Directable::UP_RIGHT_DIAGONALS,

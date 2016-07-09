@@ -3,6 +3,8 @@ require_relative 'piece'
 class Queen < Piece
 
   AVATARS = { white: "\u2655", black: "\u265B"}
+
+  POINTS = 9
   
   MOVE_MAPPINGS = { up_verticals: Directable::UP_VERTICALS,
                     down_verticals: Directable::DOWN_VERTICALS,
