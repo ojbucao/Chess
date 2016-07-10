@@ -23,7 +23,6 @@ class Game
     loop do
       player = players[current_color]
       input = player.input
-      break if input.to_s.empty?
       if input.valid? && board.occupied?(board.translate(input.origin))
         move = Move.new(board: board, origin: input.origin, target: input.target)
         if move.legal?

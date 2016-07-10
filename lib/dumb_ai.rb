@@ -8,7 +8,6 @@ class DumbAi < Player
   end
 
   def get_move
-    sleep 1
     if !pieces_threatened(pieces).empty?
       piece = pieces_threatened(pieces).shift
       if piece.class == King
@@ -17,8 +16,9 @@ class DumbAi < Player
         move = fight(piece) || evade(piece) unless piece.defended?
       end
     end
-
-    if !pieces_threatened(enemy_pieces).empty?
+    
+    # TO FIX: gets stuck in here
+    if !pieces_threatened(enemy_pieces).empty? && move.nil?
       piece = pieces_threatened(enemy_pieces).shift
       move = capture(piece)
     end
